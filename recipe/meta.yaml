@@ -15,22 +15,24 @@ source:
 
 build:
   noarch: python
-  number: 2
-  script: python -m pip install --no-deps --ignore-installed .
+  number: 3
+  script: {{ PYTHON }} -m pip install . --no-deps -vv
 
 
 requirements:
   host:
     - pip
-    - python
+    - python {{ python_min }}
     - setuptools
   run:
-    - python
+    - python >={{ python_min }}
     - setuptools
     - matplotlib-base
     - easydev
 
 test:
+  requires:
+    - python {{ python_min }}
   imports:
     colormap
 
