@@ -1,35 +1,32 @@
 {% set name = "colormap" %}
-{% set version = "1.0.1" %}
-{% set sha256 = "d361296c796d0868e0fbed2506b0a774f739819d2446a2ce7f8dd4e4c228477a" %}
-
+{% set version = "1.2.0" %}
 
 package:
-  name: {{ name }}
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.tar.gz
-  url: https://pypi.python.org/packages/68/8f/9cf6bd10f0d2c4522504412ace0faeaac67f8e6280af6965a88f825c712d/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
-
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/colormap-{{ version }}.tar.gz
+  sha256: b6a9ae93dff67c44c1715680c8c00a9de05a8e9c556b6219d07fa8418414e7fa
 
 build:
   noarch: python
-  number: 3
-  script: {{ PYTHON }} -m pip install . --no-deps -vv
-
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 0
 
 requirements:
   host:
-    - pip
     - python {{ python_min }}
-    - setuptools
+    - poetry-core
+    - pip
   run:
     - python >={{ python_min }}
     - setuptools
     - matplotlib-base
     - easydev
-
+    - numpy >=2.0.0,<3.0.0
+    - importlib_resources
+    
 test:
   requires:
     - python {{ python_min }}
