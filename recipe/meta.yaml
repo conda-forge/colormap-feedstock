@@ -36,6 +36,7 @@ test:
     colormap
   requires:
     - python {{ python_min }}
+    - numpy <2 #Only for Python < 3.10
     - pip
   commands:
     - pip check
