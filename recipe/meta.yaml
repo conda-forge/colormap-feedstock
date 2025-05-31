@@ -7,8 +7,8 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 8df95ee498257aeabd3c8f42b55eac9a095fbfa05fbcbe5ac751fc95d71b00da
+  url: https://github.com/cokelaer/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: 796babc19be2ba1953b1aed26fdd99067adbf763ae2193e97e7c5e2209907e4a
 
 
 build:
@@ -26,18 +26,25 @@ requirements:
   run:
     - python >={{ python_min }}
     - setuptools
-    - matplotlib-base
-    - easydev
+    - matplotlib-base >=3.9.2
+    - numpy >=2.0.0
 
 test:
   imports:
     colormap
   requires:
     - python {{ python_min }}
-    - numpy <2 #Only for Python < 3.10
     - pip
+    - pytest
+  source_files:
+    - test/
   commands:
-    - pip check
+    # Skip pip-check until we drop py310.
+    # NB: The pins here, to accomocate py<310, seems more like solve issues when new numpy was out
+    # rather than real code incompatibilities.
+    # The full test suit is running and passing.
+    # - pip check
+    - pytest
 
 about:
   home: https://pypi.org/project/colormap/
