@@ -5,7 +5,7 @@ Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/colormap-feedst
 
 Home: https://pypi.org/project/colormap/
 
-Package license: LGPL v3+
+Package license: LGPL-3.0-or-later
 
 Summary: Utilities to ease manipulation of matplotlib colormaps and color codecs (e.g., hex2rgb)
 
