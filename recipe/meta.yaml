@@ -1,42 +1,54 @@
 {% set name = "colormap" %}
-{% set version = "1.0.1" %}
-{% set sha256 = "d361296c796d0868e0fbed2506b0a774f739819d2446a2ce7f8dd4e4c228477a" %}
+{% set version = "1.3.0" %}
 
 
 package:
-  name: {{ name }}
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.tar.gz
-  url: https://pypi.python.org/packages/68/8f/9cf6bd10f0d2c4522504412ace0faeaac67f8e6280af6965a88f825c712d/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  url: https://github.com/cokelaer/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: 796babc19be2ba1953b1aed26fdd99067adbf763ae2193e97e7c5e2209907e4a
 
 
 build:
   noarch: python
-  number: 2
-  script: python -m pip install --no-deps --ignore-installed .
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 
 requirements:
   host:
     - pip
-    - python
+    - python {{ python_min }}
     - setuptools
+    - poetry-core
   run:
-    - python
+    - python >={{ python_min }}
     - setuptools
-    - matplotlib-base
-    - easydev
+    - matplotlib-base >=3.9.2
+    - numpy >=2.0.0
 
 test:
   imports:
     colormap
+  requires:
+    - python {{ python_min }}
+    - pip
+    - pytest
+  source_files:
+    - test/
+  commands:
+    # Skip pip-check until we drop py310.
+    # NB: The pins here, to accomocate py<310, seems more like solve issues when new numpy was out
+    # rather than real code incompatibilities.
+    # The full test suit is running and passing.
+    # - pip check
+    - pytest
 
 about:
-  home: http://packages.python.org/colormap/
-  license: LGPL v3+
+  home: https://pypi.org/project/colormap/
+  license: LGPL-3.0-or-later
   license_family: LGPL
   license_file: LICENSE
   summary: 'Utilities to ease manipulation of matplotlib colormaps and color codecs (e.g., hex2rgb)'
